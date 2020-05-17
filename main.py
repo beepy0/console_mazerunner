@@ -3,11 +3,56 @@ import time
 import colorama
 import shutil
 import random
+import threading
 from static.data import instructions, Direction, keyboard_to_direction, game_ending_text, city_elements
+from datetime import datetime, timedelta
 
+exit_screen_text = 'Game quit'
+
+lock = threading.Event()
 player_map = []
 player_pos = {'x': 1, 'y': 1}
 map_coords = {}
+
+
+# class Game:
+#     def __init__(self):
+#
+#         self.player_map = []
+#         self.map_coords = {}
+#         self.player_pos = {'x': 1, 'y': 1}
+#         self.lock = threading.Event()
+#         self.exit_screen_text = 'Game quit'
+#
+#     def init_level(self):
+#         for line in range(shutil.get_terminal_size()[1] - 2):
+#             self.player_map.append([])
+#             for cell in range(shutil.get_terminal_size()[0] - 1):
+#                 if line > shutil.get_terminal_size()[1] - 12 and cell > shutil.get_terminal_size()[0] - 25:
+#                     self.player_map[line].append(' ')
+#                     continue
+#                 self.player_map[line].append(' ' if random.randint(0, 10) < 8 else random.choice(city_elements))
+#         self.player_map[-5][-12] = '⌂'
+#
+#         self.player_map[self.player_pos['y']][self.player_pos['x']] = '♫'
+#         for row_ind, line in enumerate(self.player_map):
+#             for col_ind, cell in enumerate(line):
+#                 self.map_coords[(row_ind, col_ind)] = cell
+
+
+def quit_wait(hotkey=None, suppress=False, trigger_on_release=False):
+    """
+    Blocks the program execution until the given hotkey is pressed. The wait lock can be released via lock.set().
+    Warning: lock.set() is an end-condition operation currently, as it will free the global lock variable for all cases
+    in code.
+    """
+    if hotkey:
+        remove = keyboard.add_hotkey(hotkey, lambda: lock.set(),
+                                     suppress=suppress, trigger_on_release=trigger_on_release)
+        lock.wait()
+        keyboard.remove_hotkey(remove)
+    else:
+        raise ValueError('please supply a hotkey to wait for')
 
 
 def init_level():
@@ -27,6 +72,11 @@ def init_level():
 
 
 def move_one_step(directions):
+    if game_start + timedelta(seconds=5) < datetime.now():
+        global exit_screen_text
+        exit_screen_text = 'time ran out'
+        lock.set()
+        return
     if directions == [Direction.SAME, Direction.SAME]:
         return
     next_step = map_coords.get((player_pos['y'] + directions[0].value, player_pos['x'] + directions[1].value),
@@ -74,7 +124,7 @@ def print_exit_screen(text):
     clear_screen()
     print_at_coords(text, int((shutil.get_terminal_size()[1] - 2) / 3))
 
-    if text != 'Game quit':
+    if text not in ['Game quit', 'time ran out']:
         print_at_coords('Quitting in...')
         for i in range(4, 0, -1):
             print_at_coords(str(i))
@@ -94,10 +144,11 @@ if __name__ == '__main__':
     clear_screen()
     print(instructions)
     keyboard.wait('s')
+    game_start = datetime.now()
 
     print_map()
     keyboard.on_press(lambda _: move_one_step(
         keyboard_to_direction.get(keyboard.get_hotkey_name(), [Direction.SAME, Direction.SAME])))
 
-    keyboard.wait('esc')
-    print_exit_screen('Game quit')
+    quit_wait('esc')
+    print_exit_screen(exit_screen_text)
