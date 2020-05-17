@@ -54,8 +54,8 @@ def update_screen():
     print_map()
 
 
-def move_cursor(x,y):
-    print ("\x1b[{};{}H".format(y+1,x+1))
+def move_cursor(x, y):
+    print ("\x1b[{};{}H".format(y+1, x+1))
 
 
 def print_map():
@@ -75,11 +75,11 @@ def print_exit_screen(text):
     print_at_coords(text, int((shutil.get_terminal_size()[1] - 2) / 3))
 
     if text != 'Game quit':
-        print_at_coords('Quitting in...', 0)
+        print_at_coords('Quitting in...')
         for i in range(4, 0, -1):
-            print_at_coords(str(i), 0)
+            print_at_coords(str(i))
             time.sleep(1)
-        print_at_coords('Just kidding, press escape to quit!', 0)
+        print_at_coords('Just kidding, press escape to quit!')
 
 
 def print_at_coords(text, y=0):

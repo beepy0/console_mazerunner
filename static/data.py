@@ -22,7 +22,8 @@ keyboard_to_direction = {
 }
 
 
-city_elements = ['░', '░', '░', '≡', '≡',  '░', '░', '≡', '▀', '▼', '¥']
+city_elements = ['░', '░', '░', '≡', '≡',  '░', '░', '≡', '▀', '▼',
+                 colorama.Fore.LIGHTYELLOW_EX + '¥' + colorama.Fore.LIGHTBLACK_EX]
 
 
 instructions = colorama.Fore.LIGHTCYAN_EX + colorama.Style.BRIGHT \

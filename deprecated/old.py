@@ -68,3 +68,16 @@ def rotate_through_middle(row_ind, scanline, rotation_dir):
 #     ['1', ' ', ' ', ' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1'],
 #     ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1']
 # ]
+
+
+def shade_lamp_lighting():
+    for coord, value in map_coords.items():
+        if value == '¥':
+            for x, y in [(1,0),(-1,0),(0,1),(0,-1)]:
+                light_based_on_coords(coord[0] + x, coord[1] + y)
+
+
+def light_based_on_coords(x, y):
+    if map_coords.get((x, y), 'NaN') in ' ':
+        player_map[x][y] = colorama.Back.YELLOW + colorama.Style.DIM + map_coords.get((x, y)) \
+                           + colorama.Back.BLACK
