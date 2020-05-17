@@ -16,6 +16,7 @@ class Game:
         self.player_pos = {'x': 1, 'y': 1}
         self.lock = threading.Event()
         self.instructions = text.get('instructions', 'missing instructions')
+        self.begin_screen_text = text.get('game_begin', 'missing game begin text')
         self.beat_screen_text = text.get('game_beat', 'missing game beat text')
         self.exit_screen_text = text.get('exit_screen', 'missing exit screen text')
 
@@ -49,12 +50,13 @@ class Game:
             raise ValueError('please supply a hotkey to wait for')
 
     def move_one_step(self, directions):
-        if self.start_time + timedelta(seconds=5) < datetime.now():
-            self.exit_screen_text = 'time ran out'
+        if self.start_time + timedelta(seconds=60) < datetime.now():
+            self.exit_screen_text = 'Time ran out'
             self.lock.set()
             return
         if directions == [Direction.SAME, Direction.SAME]:
             return
+
         next_step = self.map_coords.get(
             (self.player_pos['y'] + directions[0].value, self.player_pos['x'] + directions[1].value), 'out of bounds'
         )
@@ -104,7 +106,7 @@ def print_exit_screen(msg):
     clear_screen()
     print_at_coords(msg, int((shutil.get_terminal_size()[1] - 2) / 3))
 
-    if msg not in ['Game quit', 'time ran out']:
+    if msg not in ['Game quit', 'Time ran out']:
         print_at_coords('Quitting in...')
         for i in range(4, 0, -1):
             print_at_coords(str(i))
@@ -112,6 +114,6 @@ def print_exit_screen(msg):
         print_at_coords('Just kidding, press escape to quit!')
 
 
-def print_at_coords(msg, y=0):
+def print_at_coords(msg, y=0, alignment='^'):
     print(y * '\n')
-    print('{:^{}}'.format(msg, shutil.get_terminal_size()[0]))
+    print('{0:{1}{2}}'.format(msg, alignment, shutil.get_terminal_size()[0]))

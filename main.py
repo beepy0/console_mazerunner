@@ -1,6 +1,7 @@
 import keyboard
 import colorama
-from assets.game import Game, clear_screen, print_map, print_exit_screen
+import time
+from assets.game import Game, clear_screen, print_map, print_at_coords, print_exit_screen
 from assets.data import Direction, keyboard_to_direction
 from datetime import datetime
 
@@ -11,8 +12,12 @@ if __name__ == '__main__':
     colorama.init()
 
     clear_screen()
-    print(game.instructions)
+    for line in game.instructions:
+        print_at_coords(line, alignment='<')
     keyboard.wait('s')
+
+    print_at_coords(game.begin_screen_text)
+    time.sleep(2)
     game.start_time = datetime.now()
 
     print_map(game)
