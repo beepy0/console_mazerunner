@@ -1,1 +1,24 @@
-# console_mazerunner
+# Console Mazerunner
+## Run through a city maze and reach home in time
+
+- Runs entirely in the command line (terminal)
+- Easy setup (run pip install for the requirements.txt, see instructions below)
+- Potential for new features and open-sourced for everybody
+
+
+
+# Setup
+
+## Base requirements
+- Python 3+
+- Pip
+
+## Without an IDE
+- Install the library dependencies via pip:
+  `pip install -r requirements.txt` . More info [here](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
+- Open a terminal, navigate to the project folder and run `python main.py`
+
+## Using PyCharm
+- Create a new Python project
+- Automatically install packages via the requirements.txt file and [the official instructions](https://www.jetbrains.com/help/pycharm/managing-dependencies.html#) (Best use a [virtualenvironment to separate library dependencies between projects](https://www.jetbrains.com/help/idea/creating-virtual-environment.html#))
+- Start in a terminal window **outside** the IDE, Navigate to the project folder and run `python main.py`
