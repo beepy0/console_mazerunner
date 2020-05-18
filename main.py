@@ -1,3 +1,4 @@
+# coding: utf-8
 import keyboard
 import colorama
 import time
