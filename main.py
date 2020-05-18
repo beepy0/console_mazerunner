@@ -2,12 +2,35 @@
 import keyboard
 import colorama
 import time
+import sys
+import platform
+import termios
+import atexit
 from assets.game import Game, clear_screen, print_map, print_at_coords, print_exit_screen
 from assets.data import Direction, keyboard_to_direction
 from datetime import datetime
 
 
+def toggle_console_echo(fd, enabled):
+    (iflag, oflag, cflag, lflag, ispeed, ospeed, cc) \
+        = termios.tcgetattr(fd)
+
+    if enabled:
+        lflag |= termios.ECHO
+    else:
+        lflag &= ~termios.ECHO
+
+    new_attr = [iflag, oflag, cflag, lflag, ispeed, ospeed, cc]
+    termios.tcsetattr(fd, termios.TCSANOW, new_attr)
+
+
 if __name__ == '__main__':
+
+    # disable console echo on unix-based systems (Linux/OS X)
+    if platform.system() in ['Linux', 'Darwin']:
+        atexit.register(toggle_console_echo, sys.stdin.fileno(), enabled=True)
+        toggle_console_echo(sys.stdin.fileno(), enabled=False)
+
     game = Game()
     game.init_level()
     colorama.init()
