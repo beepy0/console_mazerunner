@@ -10,8 +10,9 @@
 # Setup
 
 ## Base requirements
-- Python 3+
+- Python 3.6+
 - Pip
+- Under Linux/OS X, you need to be root in order to use the required keyboard library
 
 ## Without an IDE
 - Install the library dependencies via pip:
