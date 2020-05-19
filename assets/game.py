@@ -139,7 +139,7 @@ def print_exit_screen(msg):
         for i in range(4, 0, -1):
             print_at_coords(str(i))
             time.sleep(1)
-        print_at_coords('Just kidding, press escape to quit!')
+        print_at_coords('Game quit')
 
 
 def print_at_coords(msg, y=0, alignment='^'):
