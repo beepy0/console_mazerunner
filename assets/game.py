@@ -16,7 +16,7 @@ class Game:
         self.player_map = []
         self.map_coords = {}
         self.player_pos = {'x': 1, 'y': 1}
-        self.player_bombs = 3
+        self.player_bombs = 100
         self.lock = threading.Event()
         self.instructions = text.get('instructions', 'missing instructions')
         self.begin_screen_text = text.get('game_begin', 'missing game begin text')
@@ -92,7 +92,7 @@ def detonate_bomb(game):
     for step in data['explosion_steps'].values():
         shade_radius(game, step)
         update_screen(game)
-        time.sleep(0.032)
+        time.sleep(0.048)
 
 
 def shade_radius(game, step):
