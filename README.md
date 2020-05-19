@@ -1,6 +1,5 @@
 # Console Mazerunner
-## Solve the maze of the gray blade-runner-esque landscape.
-## Run around abandoned buildings, towers and tunnels and bring the music home.
+## Solve the maze of the gray blade-runner-esque landscape. Run around abandoned buildings, towers and tunnels and bring the music home.
 
 - Runs entirely in the command line (terminal)
 - Easy setup (run pip install for the requirements.txt, see instructions below)
