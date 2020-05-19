@@ -50,3 +50,4 @@ if __name__ == '__main__':
 
     game.wait_quit('esc')
     print_exit_screen(game.exit_screen_text)
+

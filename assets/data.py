@@ -36,42 +36,42 @@ data = {
         'one': {
             'radius_offsets': [range(-4, 5, 1), range(-3, 4, 1), range(-2, 3, 1), range(-1, 2, 1)],
             'colors': [' ',
-                       colorama.Back.RED + ' ' + colorama.Back.BLACK,
-                       colorama.Back.WHITE + ' ' + colorama.Back.BLACK,
-                       colorama.Back.LIGHTWHITE_EX + ' ' + colorama.Back.BLACK]
+                       colorama.Fore.RED + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.WHITE + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.LIGHTWHITE_EX + '█' + colorama.Fore.LIGHTBLACK_EX]
         },
         'two': {
             'radius_offsets': [range(-4, 5, 1), range(-3, 4, 1), range(-2, 3, 1), range(-1, 2, 1)],
-            'colors': [colorama.Back.YELLOW + ' ' + colorama.Back.BLACK,
-                       colorama.Back.WHITE + ' ' + colorama.Back.BLACK,
-                       colorama.Back.LIGHTWHITE_EX + ' ' + colorama.Back.BLACK,
-                       colorama.Back.LIGHTWHITE_EX + ' ' + colorama.Back.BLACK]
+            'colors': [colorama.Fore.YELLOW + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.WHITE + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.LIGHTWHITE_EX + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.LIGHTWHITE_EX + '█' + colorama.Fore.LIGHTBLACK_EX]
         },
         'three': {
             'radius_offsets': [range(-4, 5, 1), range(-3, 4, 1), range(-2, 3, 1), range(-1, 2, 1)],
-            'colors': [colorama.Back.WHITE + ' ' + colorama.Back.BLACK,
-                       colorama.Back.LIGHTYELLOW_EX + ' ' + colorama.Back.BLACK,
-                       colorama.Back.LIGHTYELLOW_EX + ' ' + colorama.Back.BLACK,
-                       colorama.Back.LIGHTRED_EX + ' ' + colorama.Back.BLACK]
+            'colors': [colorama.Fore.WHITE + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.LIGHTYELLOW_EX + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.LIGHTYELLOW_EX + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.LIGHTRED_EX + '█' + colorama.Fore.LIGHTBLACK_EX]
         },
         'four': {
             'radius_offsets': [range(-4, 5, 1), range(-3, 4, 1), range(-2, 3, 1), range(-1, 2, 1)],
-            'colors': [colorama.Back.RED + ' ' + colorama.Back.BLACK,
-                       colorama.Back.LIGHTRED_EX + ' ' + colorama.Back.BLACK,
-                       colorama.Back.RED + ' ' + colorama.Back.BLACK,
+            'colors': [colorama.Fore.RED + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.LIGHTRED_EX + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.RED + '█' + colorama.Fore.LIGHTBLACK_EX,
                        ' ']
         },
         'five': {
             'radius_offsets': [range(-4, 5, 1), range(-3, 4, 1), range(-2, 3, 1), range(-1, 2, 1)],
             'colors': [' ',
-                       colorama.Back.RED + ' ' + colorama.Style.DIM + colorama.Back.BLACK,
-                       colorama.Back.RED + ' ' + colorama.Back.BLACK,
+                       colorama.Fore.RED + '█' + colorama.Fore.LIGHTBLACK_EX,
+                       colorama.Fore.RED + '█' + colorama.Fore.LIGHTBLACK_EX,
                        ' ']
         },
         'six': {
             'radius_offsets': [range(-4, 5, 1), range(-3, 4, 1), range(-2, 3, 1), range(-1, 2, 1)],
             'colors': [' ',
-                       colorama.Back.RED + ' ' + colorama.Back.BLACK,
+                       colorama.Fore.RED + '█' + colorama.Fore.LIGHTBLACK_EX,
                        ' ',
                        ' ']
         },
@@ -104,4 +104,3 @@ text = {
     'game_beat': 'You beat the game :)...for now!! TA DA DAAAAAAAA',
     'exit_screen': 'Game quit'
 }
-
