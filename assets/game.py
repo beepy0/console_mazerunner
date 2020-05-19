@@ -5,7 +5,8 @@ import random
 import threading
 import time
 import colorama
-from assets.data import Direction, city_elements, text
+import itertools
+from assets.data import Instructions, data, text
 from datetime import datetime, timedelta
 
 
@@ -15,6 +16,7 @@ class Game:
         self.player_map = []
         self.map_coords = {}
         self.player_pos = {'x': 1, 'y': 1}
+        self.player_bombs = 3
         self.lock = threading.Event()
         self.instructions = text.get('instructions', 'missing instructions')
         self.begin_screen_text = text.get('game_begin', 'missing game begin text')
@@ -28,7 +30,7 @@ class Game:
                 if line > shutil.get_terminal_size()[1] - 12 and cell > shutil.get_terminal_size()[0] - 25:
                     self.player_map[line].append(' ')
                     continue
-                self.player_map[line].append(' ' if random.randint(0, 10) < 8 else random.choice(city_elements))
+                self.player_map[line].append(' ' if random.randint(0, 10) < 8 else random.choice(data['city_elements']))
         self.player_map[-5][-12] = '⌂'
 
         self.player_map[self.player_pos['y']][self.player_pos['x']] = '♫'
@@ -50,12 +52,19 @@ class Game:
         else:
             raise ValueError('please supply a hotkey to wait for')
 
-    def move_one_step(self, directions):
+    def process_keypress(self, directions):
+        if directions[0] == Instructions.BOMB and directions[1] == Instructions.BOMB:
+            if self.player_bombs > 0:
+                self.player_bombs -= 1
+                detonate_bomb(self)
+            return
+
         if self.start_time + timedelta(seconds=60) < datetime.now():
             self.exit_screen_text = 'Time ran out'
             self.lock.set()
             return
-        if directions == [Direction.SAME, Direction.SAME]:
+
+        if directions == [Instructions.SAME, Instructions.SAME]:
             return
 
         next_step = self.map_coords.get(
@@ -74,7 +83,25 @@ class Game:
 
             update_screen(self)
         elif next_step == '⌂':
-            print_exit_screen(self.beat_screen_text)
+            self.exit_screen_text = text.get('game_beat', 'game beat text is not supplied')
+            self.lock.set()
+            return
+
+
+def detonate_bomb(game):
+    for step in data['explosion_steps'].values():
+        shade_radius(game, step)
+        update_screen(game)
+        time.sleep(0.032)
+
+
+def shade_radius(game, step):
+    for radius, color in list(zip(step['radius_offsets'], step['colors'])):
+        for x_off, y_off in set(itertools.product(radius, repeat=2)) - {(0, 0)}:
+            if game.map_coords.get((game.player_pos['y'] + y_off, game.player_pos['x'] + x_off), 'NaN') \
+                    not in ['NaN', '⌂']:
+                game.map_coords[(game.player_pos['y'] + y_off, game.player_pos['x'] + x_off)], \
+                    game.player_map[game.player_pos['y'] + y_off][game.player_pos['x'] + x_off] = color, color
 
 
 def clear_screen():

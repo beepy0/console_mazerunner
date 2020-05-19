@@ -4,10 +4,9 @@ import colorama
 import time
 import sys
 import platform
-import termios
 import atexit
 from assets.game import Game, clear_screen, print_map, print_at_coords, print_exit_screen
-from assets.data import Direction, keyboard_to_direction
+from assets.data import Instructions, keyboard_to_direction
 from datetime import datetime
 
 
@@ -28,6 +27,7 @@ if __name__ == '__main__':
 
     # disable console echo on unix-based systems (Linux/OS X)
     if platform.system() in ['Linux', 'Darwin']:
+        import termios
         atexit.register(toggle_console_echo, sys.stdin.fileno(), enabled=True)
         toggle_console_echo(sys.stdin.fileno(), enabled=False)
 
@@ -45,8 +45,8 @@ if __name__ == '__main__':
     game.start_time = datetime.now()
 
     print_map(game)
-    keyboard.on_press(lambda _: game.move_one_step(
-        keyboard_to_direction.get(keyboard.get_hotkey_name(), [Direction.SAME, Direction.SAME])))
+    keyboard.on_press(lambda _: game.process_keypress(
+        keyboard_to_direction.get(keyboard.get_hotkey_name(), [Instructions.SAME, Instructions.SAME])))
 
     game.wait_quit('esc')
     print_exit_screen(game.exit_screen_text)
