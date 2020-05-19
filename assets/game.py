@@ -15,6 +15,7 @@ class Game:
         self.start_time = None
         self.player_map = []
         self.map_coords = {}
+        self.player_prev_pos = {'x': 1, 'y': 1}
         self.player_pos = {'x': 1, 'y': 1}
         self.player_bombs = 3
         self.lock = threading.Event()
@@ -53,6 +54,7 @@ class Game:
             raise ValueError('please supply a hotkey to wait for')
 
     def process_keypress(self, directions):
+
         if directions[0] == Instructions.BOMB and directions[1] == Instructions.BOMB:
             if self.player_bombs > 0:
                 self.player_bombs -= 1
@@ -75,13 +77,15 @@ class Game:
             self.map_coords[(self.player_pos['y'], self.player_pos['x'])], \
                 self.player_map[self.player_pos['y']][self.player_pos['x']] = ' ', ' '
             # get player's new position
+            self.player_prev_pos['y'], self.player_prev_pos['x'] = self.player_pos['y'], self.player_pos['x']
             self.player_pos['y'], self.player_pos['x'] = \
                 self.player_pos['y'] + directions[0].value, self.player_pos['x'] + directions[1].value
             # update current map board and its coordinates with new player position
             self.map_coords[(self.player_pos['y'], self.player_pos['x'])], \
                 self.player_map[self.player_pos['y']][self.player_pos['x']] = '♫', '♫'
 
-            update_screen(self)
+            update_screen(self, [self.player_prev_pos['y']])
+            update_screen(self, [self.player_pos['y']])
         elif next_step == '⌂':
             self.exit_screen_text = text.get('game_beat', 'game beat text is not supplied')
             self.lock.set()
@@ -91,8 +95,8 @@ class Game:
 def detonate_bomb(game):
     for step in data['explosion_steps'].values():
         shade_radius(game, step)
-        update_screen(game)
-        time.sleep(0.032)
+        update_screen(game, [game.player_pos['y'] + y_off for y_off in range(-4, 5, 1)])
+        time.sleep(0.022)
 
 
 def shade_radius(game, step):
@@ -108,25 +112,30 @@ def clear_screen():
     print("\x1b[2J")
 
 
-def update_screen(game):
-    # moves the console cursor to the starting position
-    move_cursor(0, 0)
-    print_map(game)
+def move_cursor(y):
+    print("\x1b[{};{}H".format(y + 1, 1))
 
 
-def move_cursor(x, y):
-    print("\x1b[{};{}H".format(y + 1, x + 1))
+def update_screen(game, y_rows=None):
+    if y_rows == None:
+        move_cursor(0)
+        for row in game.player_map:
+            rasterize(row)
+    else:
+        for row in y_rows:
+            if game.map_coords.get((row, 0), 'NaN') != 'NaN':
+                move_cursor(row)
+                rasterize(game.player_map[row])
 
 
-def print_map(game):
-    for row in game.player_map:
-        if '♫' in row:
-            line_halved = "".join(row).split('♫')
-            print(colorama.Fore.LIGHTBLACK_EX + line_halved[0] + colorama.Fore.BLACK + colorama.Back.GREEN
-                  + '♫' + colorama.Style.RESET_ALL
-                  + colorama.Fore.LIGHTBLACK_EX + line_halved[1])
-        else:
-            print(colorama.Fore.LIGHTBLACK_EX + "".join(row))
+def rasterize(row):
+    if '♫' in row:
+        line_halved = "".join(row).split('♫')
+        print(str(colorama.Fore.LIGHTBLACK_EX + line_halved[0] + colorama.Fore.BLACK + colorama.Back.GREEN
+                  + '♫' + colorama.Back.BLACK
+                  + colorama.Fore.LIGHTBLACK_EX + line_halved[1]))
+    else:
+        print(colorama.Fore.LIGHTBLACK_EX + "".join(row))
 
 
 def print_exit_screen(msg):

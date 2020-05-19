@@ -5,7 +5,7 @@ import time
 import sys
 import platform
 import atexit
-from assets.game import Game, clear_screen, print_map, print_at_coords, print_exit_screen
+from assets.game import Game, clear_screen, update_screen, print_at_coords, print_exit_screen
 from assets.data import Instructions, keyboard_to_direction
 from datetime import datetime
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     time.sleep(2)
     game.start_time = datetime.now()
 
-    print_map(game)
+    update_screen(game)
     keyboard.on_press(lambda _: game.process_keypress(
         keyboard_to_direction.get(keyboard.get_hotkey_name(), [Instructions.SAME, Instructions.SAME])))
 

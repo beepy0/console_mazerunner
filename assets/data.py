@@ -11,6 +11,7 @@ class Instructions(Enum):
     DOWN = 1
     SAME = 0
     BOMB = 2
+    TEST = 3
 
 
 keyboard_to_direction = {
@@ -22,7 +23,8 @@ keyboard_to_direction = {
     'a+w': [Instructions.UP, Instructions.LEFT],
     'd+s': [Instructions.DOWN, Instructions.RIGHT],
     'a+s': [Instructions.DOWN, Instructions.LEFT],
-    'e+q': [Instructions.BOMB, Instructions.BOMB]
+    'e+q': [Instructions.BOMB, Instructions.BOMB],
+    'z': [Instructions.TEST, Instructions.TEST]
 }
 
 
