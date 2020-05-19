@@ -5,7 +5,7 @@ import random
 import threading
 import time
 import colorama
-from assets.data import Direction, city_elements, text
+from assets.data import Instructions, city_elements, text
 from datetime import datetime, timedelta
 
 
@@ -50,12 +50,18 @@ class Game:
         else:
             raise ValueError('please supply a hotkey to wait for')
 
-    def move_one_step(self, directions):
+    def process_keypress(self, directions):
+        if directions[0] == Instructions.BOMB and directions[1] == Instructions.BOMB:
+            detonate_bomb(self)
+            update_screen(self)
+            return
+
         if self.start_time + timedelta(seconds=60) < datetime.now():
             self.exit_screen_text = 'Time ran out'
             self.lock.set()
             return
-        if directions == [Direction.SAME, Direction.SAME]:
+
+        if directions == [Instructions.SAME, Instructions.SAME]:
             return
 
         next_step = self.map_coords.get(
@@ -74,7 +80,23 @@ class Game:
 
             update_screen(self)
         elif next_step == '⌂':
-            print_exit_screen(self.beat_screen_text)
+            self.exit_screen_text = text.get('game_beat', 'game beat text is not supplied')
+            self.lock.set()
+            return
+
+
+def detonate_bomb(game):
+    for x_off, y_off in [[1, 0],
+                         [-1, 0],
+                         [0, 1],
+                         [0, -1],
+                         [1, 1],
+                         [-1, -1],
+                         [-1, 1],
+                         [1, -1]]:
+        if game.map_coords.get((game.player_pos['y'] + y_off, game.player_pos['x'] + x_off), 'NaN') != 'NaN':
+            game.map_coords[(game.player_pos['y'] + y_off, game.player_pos['x'] + x_off)], \
+                game.player_map[game.player_pos['y'] + y_off][game.player_pos['x'] + x_off] = ' ', ' '
 
 
 def clear_screen():

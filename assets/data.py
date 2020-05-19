@@ -3,23 +3,25 @@ from enum import Enum
 import colorama
 
 
-class Direction(Enum):
+class Instructions(Enum):
     LEFT = -1
     RIGHT = 1
     UP = -1
     DOWN = 1
     SAME = 0
+    BOMB = 2
 
 
 keyboard_to_direction = {
-    'w': [Direction.UP, Direction.SAME],
-    's': [Direction.DOWN, Direction.SAME],
-    'd': [Direction.SAME, Direction.RIGHT],
-    'a': [Direction.SAME, Direction.LEFT],
-    'd+w': [Direction.UP, Direction.RIGHT],
-    'a+w': [Direction.UP, Direction.LEFT],
-    'd+s': [Direction.DOWN, Direction.RIGHT],
-    'a+s': [Direction.DOWN, Direction.LEFT]
+    'w': [Instructions.UP, Instructions.SAME],
+    's': [Instructions.DOWN, Instructions.SAME],
+    'd': [Instructions.SAME, Instructions.RIGHT],
+    'a': [Instructions.SAME, Instructions.LEFT],
+    'd+w': [Instructions.UP, Instructions.RIGHT],
+    'a+w': [Instructions.UP, Instructions.LEFT],
+    'd+s': [Instructions.DOWN, Instructions.RIGHT],
+    'a+s': [Instructions.DOWN, Instructions.LEFT],
+    'e+q': [Instructions.BOMB, Instructions.BOMB]
 }
 
 

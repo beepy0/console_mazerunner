@@ -11,18 +11,18 @@ viewport_length = len(view[0])
 
 
 def rotate_through_middle(row_ind, scanline, rotation_dir):
-    if rotation_dir == Direction.LEFT:
+    if rotation_dir == Instructions.LEFT:
         scl_half = deque(scanline[:int(viewport_length/2)])
-    elif rotation_dir == Direction.RIGHT:
+    elif rotation_dir == Instructions.RIGHT:
         scl_half = deque(scanline[int(viewport_length/2):])
     else:
         raise 'Wrong rotation direction passed'
 
     scl_half.rotate(rotation_dir.value)
 
-    if rotation_dir == Direction.LEFT:
+    if rotation_dir == Instructions.LEFT:
         view[row_ind][:int(viewport_length/2)] = scl_half
-    elif rotation_dir == Direction.RIGHT:
+    elif rotation_dir == Instructions.RIGHT:
         view[row_ind][int(viewport_length/2):] = scl_half
 
 # player_map = [
