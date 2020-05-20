@@ -5,6 +5,7 @@ import time
 import sys
 import platform
 import atexit
+import cursor
 from assets.game import Game, clear_screen, update_screen, print_at_coords, print_exit_screen
 from assets.data import Instructions, keyboard_to_direction
 from datetime import datetime
@@ -24,7 +25,7 @@ def toggle_console_echo(fd, enabled):
 
 
 if __name__ == '__main__':
-
+    cursor.hide()
     # disable console echo on unix-based systems (Linux/OS X)
     if platform.system() in ['Linux', 'Darwin']:
         import termios

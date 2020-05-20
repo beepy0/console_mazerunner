@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 
 
 class Game:
+    # TODO add some of the functions as static methods
     def __init__(self):
         self.start_time = None
         self.player_map = []
@@ -18,6 +19,7 @@ class Game:
         self.player_prev_pos = {'x': 1, 'y': 1}
         self.player_pos = {'x': 1, 'y': 1}
         self.player_bombs = 3
+        self.bomb_timeout = datetime.now() + timedelta(seconds=0.7)
         self.lock = threading.Event()
         self.instructions = text.get('instructions', 'missing instructions')
         self.begin_screen_text = text.get('game_begin', 'missing game begin text')
@@ -54,10 +56,8 @@ class Game:
             raise ValueError('please supply a hotkey to wait for')
 
     def process_keypress(self, directions):
-
         if directions[0] == Instructions.BOMB and directions[1] == Instructions.BOMB:
             if self.player_bombs > 0:
-                self.player_bombs -= 1
                 detonate_bomb(self)
             return
 
@@ -93,10 +93,20 @@ class Game:
 
 
 def detonate_bomb(game):
-    for step in data['explosion_steps'].values():
-        shade_radius(game, step)
+    if datetime.now() <= game.bomb_timeout:
+        return
+    game.player_bombs -= 1
+    game.bomb_timeout = datetime.now() + timedelta(seconds=0.7)
+    tmp = shade_blast_flash(game, data['explosion_flashes'])
+    for step, values in data['explosion_steps'].items():
+        if step == 'five':
+            for y_off, row in tmp:
+                game.player_map[game.player_pos['y'] + y_off] = row
+            update_screen(game, [game.player_pos['y'] + y_off for y_off in data['explosion_flashes']['radius_offset']])
+
+        shade_radius(game, values)
         update_screen(game, [game.player_pos['y'] + y_off for y_off in range(-4, 5, 1)])
-        time.sleep(0.022)
+        time.sleep(0.048)
 
 
 def shade_radius(game, step):
@@ -106,6 +116,23 @@ def shade_radius(game, step):
                     not in ['NaN', '⌂']:
                 game.map_coords[(game.player_pos['y'] + y_off, game.player_pos['x'] + x_off)], \
                     game.player_map[game.player_pos['y'] + y_off][game.player_pos['x'] + x_off] = color, color
+
+
+def shade_blast_flash(game, data):
+    radius = data['radius_offset']
+    before_flashed_slice = [(y_off, game.player_map[game.player_pos['y'] + y_off].copy()) for y_off in set(radius)
+                            if game.map_coords.get((game.player_pos['y'] + y_off, game.player_pos['x'] + y_off), 'NaN')
+                            != 'NaN']
+    # TODO refactor
+    for x_off, y_off in set(itertools.product(radius, repeat=2)) - {(0, 0)}:
+        if game.map_coords.get((game.player_pos['y'] + y_off, game.player_pos['x'] + x_off), 'NaN') \
+                not in ['NaN', '⌂']:
+            game.player_map[game.player_pos['y'] + y_off][game.player_pos['x'] + x_off] = \
+                colorama.Fore.WHITE + game.player_map[game.player_pos['y'] + y_off][game.player_pos['x'] + x_off] +\
+                colorama.Fore.LIGHTBLACK_EX
+    update_screen(game, [game.player_pos['y'] + y_off for y_off in radius])
+    time.sleep(0.05)
+    return before_flashed_slice
 
 
 def clear_screen():
@@ -131,6 +158,7 @@ def update_screen(game, y_rows=None):
 def rasterize(row):
     if '♫' in row:
         line_halved = "".join(row).split('♫')
+        # TODO move to data
         print(str(colorama.Fore.LIGHTBLACK_EX + line_halved[0] + colorama.Fore.BLACK + colorama.Back.GREEN
                   + '♫' + colorama.Back.BLACK
                   + colorama.Fore.LIGHTBLACK_EX + line_halved[1]))

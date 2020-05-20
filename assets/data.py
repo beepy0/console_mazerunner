@@ -1,7 +1,6 @@
 # coding: utf-8
 from enum import Enum
 import colorama
-import itertools
 
 
 class Instructions(Enum):
@@ -31,7 +30,6 @@ keyboard_to_direction = {
 data = {
     'city_elements': ['░', '░', '░', '≡', '≡',  '░', '░', '≡', '▀', '▲', '∩',
                       colorama.Fore.LIGHTYELLOW_EX + '¥' + colorama.Fore.LIGHTBLACK_EX],
-    'radius_three_blocks': [offset for offset in itertools.product(range(-4, 5, 1), repeat=2) if offset != (0,0)],
     'explosion_steps': {
         'one': {
             'radius_offsets': [range(-4, 5, 1), range(-3, 4, 1), range(-2, 3, 1), range(-1, 2, 1)],
@@ -83,6 +81,9 @@ data = {
                        ' ']
         }
 
+    },
+    'explosion_flashes': {
+        'radius_offset': range(-6, 7, 1)
     }
 
 }
