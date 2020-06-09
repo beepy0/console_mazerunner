@@ -23,6 +23,6 @@
 - run `python3 main.py`
 
 ## Using PyCharm
-- Create a new Python project
-- Automatically install packages via the requirements.txt file and [the official instructions](https://www.jetbrains.com/help/pycharm/managing-dependencies.html#) (Best use a [virtualenvironment to separate library dependencies between projects](https://www.jetbrains.com/help/idea/creating-virtual-environment.html#))
-- Start in a terminal window **outside** the IDE, Navigate to the project folder and run `python3 main.py`
+~- Create a new Python project~
+~- Automatically install packages via the requirements.txt file and [the official instructions](https://www.jetbrains.com/help/pycharm/managing-dependencies.html#) (Best use a [virtualenvironment to separate library dependencies between projects](https://www.jetbrains.com/help/idea/creating-virtual-environment.html#))~
+~- Start in a terminal window **outside** the IDE, Navigate to the project folder and run `python3 main.py`~
