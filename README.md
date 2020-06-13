@@ -1,4 +1,8 @@
 # Console Mazerunner
+
+## Script in action
+![](demo_gif/demo.gif)
+
 ### Solve the maze of the gray blade-runner-esque landscape. 
 ### Run around abandoned buildings, towers and tunnels and bring the music home.
 
