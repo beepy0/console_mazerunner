@@ -18,6 +18,8 @@
 - pip3
 - Under Linux/OS X, you need to be root in order to use the required keyboard library
 
+# Run
+
 ## Without an IDE
 - Open a terminal, navigate to the project folder
 - **if using Linux/OS X**: enter root mode `sudo su`
