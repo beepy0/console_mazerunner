@@ -6,7 +6,7 @@
 ### Run around abandoned buildings, towers and tunnels and bring the music home.
 
 - Runs entirely in the command line (terminal)
-- Easy setup (run `pip3 install -r` for the requirements.txt, see instructions below)
+- Easy setup using pip
 - Potential for new features and open-sourced for everybody
 
 
@@ -22,7 +22,7 @@
 - Open a terminal, navigate to the project folder
 - **if using Linux/OS X**: enter root mode `sudo su`
 - Install the library dependencies via pip:
-  `pip3 install -r requirements.txt` . More info [here](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
+  `python -m pip install -r requirements.txt` . More info [here](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
 
 # Run
 
